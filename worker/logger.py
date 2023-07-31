@@ -2,6 +2,7 @@ import sys
 from functools import partialmethod
 
 from loguru import logger
+from discord_webhook import DiscordWebhook
 
 STDOUT_LEVELS = ["GENERATION", "PROMPT"]
 INIT_LEVELS = ["INIT", "INIT_OK", "INIT_WARN", "INIT_ERR"]
@@ -10,6 +11,14 @@ STATS_LEVELS = ["STATS"]
 # By default we're at error level or higher
 verbosity = 20
 quiet = 0
+webhurl = ""
+
+
+def send_via_discord(record):
+    global webhurl
+    
+    webhook = DiscordWebhook(url=webhurl, rate_limit_retry=True, content=record["message"])
+    response = webhook.execute()
 
 
 def set_logger_verbosity(count):
@@ -116,6 +125,8 @@ try:
     logger.level("STATS", no=19, color="<blue>")
 except TypeError:
     pass
+
+logger = logger.patch(send_via_discord)
 
 logger.__class__.generation = partialmethod(logger.__class__.log, "GENERATION")
 logger.__class__.prompt = partialmethod(logger.__class__.log, "PROMPT")
