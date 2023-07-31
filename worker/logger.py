@@ -22,7 +22,10 @@ def set_discord_hook(url):
 def send_via_discord(record):
     global webhurl
     
-    webhook = DiscordWebhook(url=webhurl, rate_limit_retry=True, content=record["message"])
+    msg = record["message"]
+    lvl = record["level"]
+    time = record["time"]
+    webhook = DiscordWebhook(url=webhurl, rate_limit_retry=True, content=f"[{time}] {lvl} ~ {msg}")
     response = webhook.execute()
 
 
