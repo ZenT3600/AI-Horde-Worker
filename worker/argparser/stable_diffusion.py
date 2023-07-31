@@ -63,6 +63,12 @@ arg_parser.add_argument(
     default=False,
     help=("If specified this worker will not pick up controlnet jobs"),
 )
+arg_parser.add_argument(
+    "--discord",
+    action="store",
+    required=True,
+    help="Discord webhook URL for logging",
+)
 
 args = arg_parser.parse_args()
 
