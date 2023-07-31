@@ -14,6 +14,11 @@ quiet = 0
 webhurl = ""
 
 
+def set_discord_hook(url):
+    global webhurl
+    webhurl = url
+
+
 def send_via_discord(record):
     global webhurl
     
