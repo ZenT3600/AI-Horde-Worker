@@ -1,5 +1,6 @@
 import sys
 from functools import partialmethod
+from threading import Thread
 
 from loguru import logger
 from discord_webhook import DiscordWebhook, DiscordEmbed
@@ -153,7 +154,7 @@ try:
 except TypeError:
     pass
 
-logger = logger.patch(send_via_discord)
+logger = logger.patch(lambda r: Thread(target=send_via_discord, args=(r,), daemon=True).start())
 
 logger.__class__.generation = partialmethod(logger.__class__.log, "GENERATION")
 logger.__class__.prompt = partialmethod(logger.__class__.log, "PROMPT")
