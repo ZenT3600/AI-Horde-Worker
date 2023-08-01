@@ -2,7 +2,7 @@ import sys
 from functools import partialmethod
 
 from loguru import logger
-from discord_webhook import DiscordWebhook
+from discord_webhook import DiscordWebhook, DiscordEmbed
 
 STDOUT_LEVELS = ["GENERATION", "PROMPT"]
 INIT_LEVELS = ["INIT", "INIT_OK", "INIT_WARN", "INIT_ERR"]
@@ -12,6 +12,10 @@ STATS_LEVELS = ["STATS"]
 verbosity = 20
 quiet = 0
 webhurl = ""
+
+
+def get_color_from_level(lvl):
+    return {"GENERATION": "#0000FF", "PROMPT": "#FFFF00", "INIT": "#FFDDFF", "INIT_OK": "#008000", "INIT_WARN": "#FFA500", "INIT_ERR": "#FF0000", "MESSAGE": "#00FF00", "STATS": "#00008B"}[lvl]
 
 
 def set_discord_hook(url):
@@ -25,8 +29,11 @@ def send_via_discord(record):
     msg = record["message"]
     lvl = record["level"]
     time = record["time"]
-    webhook = DiscordWebhook(url=webhurl, rate_limit_retry=True, content=f"[{time}] {lvl} ~ {msg}")
-    response = webhook.execute()
+    webhook = DiscordWebhook(url=webhurl, rate_limit_retry=True)
+    embed = DiscordEmbed(title=lvl, description=msg, color=get_color_from_level(lvl))
+    embed.set_footer(text=time)
+    webhook.add_embed(embed)
+    webhook.execute()
 
 
 def set_logger_verbosity(count):
@@ -139,7 +146,7 @@ logger = logger.patch(send_via_discord)
 logger.__class__.generation = partialmethod(logger.__class__.log, "GENERATION")
 logger.__class__.prompt = partialmethod(logger.__class__.log, "PROMPT")
 logger.__class__.init = partialmethod(logger.__class__.log, "INIT")
-logger.__class__.init_ok = partialmethod(logger.__class__.log, "INIT_OK")
+logger.__class__.init_ok = partialmethod(logger.__class__.log, "INIT_OK"
 logger.__class__.init_warn = partialmethod(logger.__class__.log, "INIT_WARN")
 logger.__class__.init_err = partialmethod(logger.__class__.log, "INIT_ERR")
 logger.__class__.message = partialmethod(logger.__class__.log, "MESSAGE")
