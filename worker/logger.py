@@ -19,17 +19,17 @@ send_queue = []
 def get_color_from_level(lvl):
     try:
         return {
-            "GENERATION": "0000FF",
-            "PROMPT": "FFFF00",
-            "INIT": "FFDDFF",
-            "INIT_OK": "008000",
-            "INIT_WARN": "FFA500",
-            "INIT_ERR": "FF0000",
-            "MESSAGE": "00FF00",
-            "STATS": "00008B",
+                "GENERATION": ":purple_square:",
+            "PROMPT": ":purple_square:",
+            "INIT": ":white_square",
+            "INIT_OK": ":green_square:",
+            "INIT_WARN": ":orange_square:",
+            "INIT_ERR": ":red_square:",
+            "MESSAGE": ":green_square:",
+            "STATS": ":blue_square:",
         }[lvl]
     except:
-        return "FFFFFF"
+        return ":white_square:"
 
 
 def set_discord_hook(url):
@@ -42,10 +42,11 @@ def send_via_discord(record):
 
     msg = record["message"]
     lvl = record["level"].name
+    color = get_color_from_level(lvl)
     time = str(record["time"])
-    send_queue.append(f"_[{time}]_ **{lvl}** ~ {msg}")
+    send_queue.append(f"_[{time}]_ **{color} {lvl} {color}** ~ {msg}")
     if len(send_queue) < 10:
-        send_queue.append(f"_[{time}]_ **{lvl}** ~ {msg}")
+        return
 
     webhook = DiscordWebhook(url=webhurl, rate_limit_retry=True, content="\n".join(send_queue))
     webhook.execute()
