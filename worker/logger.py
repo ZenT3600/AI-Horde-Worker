@@ -43,9 +43,9 @@ def send_via_discord(record):
     msg = record["message"]
     lvl = record["level"].name
     time = str(record["time"])
+    send_queue.append(f"_[{time}]_ **{lvl}** ~ {msg}")
     if len(send_queue) < 10:
         send_queue.append(f"_[{time}]_ **{lvl}** ~ {msg}")
-        return
 
     webhook = DiscordWebhook(url=webhurl, rate_limit_retry=True, content="\n".join(send_queue))
     webhook.execute()
