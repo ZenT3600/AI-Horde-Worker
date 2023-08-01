@@ -17,17 +17,17 @@ webhurl = ""
 def get_color_from_level(lvl):
     try:
         return {
-            "GENERATION": "#0000FF",
-            "PROMPT": "#FFFF00",
-            "INIT": "#FFDDFF",
-            "INIT_OK": "#008000",
-            "INIT_WARN": "#FFA500",
-            "INIT_ERR": "#FF0000",
-            "MESSAGE": "#00FF00",
-            "STATS": "#00008B",
+            "GENERATION": "0000FF",
+            "PROMPT": "FFFF00",
+            "INIT": "FFDDFF",
+            "INIT_OK": "008000",
+            "INIT_WARN": "FFA500",
+            "INIT_ERR": "FF0000",
+            "MESSAGE": "00FF00",
+            "STATS": "00008B",
         }[lvl]
     except:
-        return "#FFFFFF"
+        return "FFFFFF"
 
 
 def set_discord_hook(url):
