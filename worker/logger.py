@@ -39,8 +39,8 @@ def send_via_discord(record):
     global webhurl
 
     msg = record["message"]
-    lvl = record["level"]
-    time = record["time"]
+    lvl = record["level"].name
+    time = str(record["time"])
     webhook = DiscordWebhook(url=webhurl, rate_limit_retry=True)
     embed = DiscordEmbed(title=lvl, description=msg, color=get_color_from_level(lvl))
     embed.set_footer(text=time)
