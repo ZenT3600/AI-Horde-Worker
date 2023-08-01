@@ -53,14 +53,15 @@ def send_via_discord(record):
         embed.set_image(url="https://cdn-0.emojis.wiki/emoji-pics/facebook/skull-facebook.png")
         embed.set_footer(text=repr({k: v for k, v in jobj.items() if k != "prompt"}))
         embed.set_timestamp()
+        webhook.add_embed(embed)
+        webhook.execute()
     else:
         send_queue.append(f"[**{color} {lvl} {color}**] ~ {msg}")
         if len(send_queue) < 10:
             return
         webhook = DiscordWebhook(url=webhook_url["logs"], rate_limit_retry=True, content="\n".join(send_queue))
         send_queue.clear()
-
-    webhook.execute()
+        webhook.execute()
 
 
 def set_logger_verbosity(count):
