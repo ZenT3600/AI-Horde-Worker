@@ -28,6 +28,8 @@ def get_color_from_level(lvl):
             "INIT_ERR": ":red_square:",
             "MESSAGE": ":green_square:",
             "STATS": ":blue_square:",
+            "DEBUG": ":black_large_square",
+            "WARNING": ":orange_square:",
         }[lvl]
     except:
         return ":white_large_square:"
