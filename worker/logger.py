@@ -13,6 +13,7 @@ STATS_LEVELS = ["STATS"]
 verbosity = 20
 quiet = 0
 webhurl = ""
+send_queue = []
 
 
 def get_color_from_level(lvl):
@@ -37,16 +38,18 @@ def set_discord_hook(url):
 
 
 def send_via_discord(record):
-    global webhurl
+    global webhurl, send_queue
 
     msg = record["message"]
     lvl = record["level"].name
     time = str(record["time"])
-    webhook = DiscordWebhook(url=webhurl, rate_limit_retry=True)
-    embed = DiscordEmbed(title=lvl, description=msg, color=get_color_from_level(lvl))
-    embed.set_footer(text=time)
-    webhook.add_embed(embed)
+    if len(send_queue) < 10:
+        send_queue.append(f"_[{time}]_ **{lvl}** ~ {msg}")
+        return
+
+    webhook = DiscordWebhook(url=webhurl, rate_limit_retry=True, content="\n".join(send_queue))
     webhook.execute()
+    send_queue.clear()
 
 
 def set_logger_verbosity(count):
