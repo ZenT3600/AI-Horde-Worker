@@ -4,6 +4,7 @@ import json
 import random
 import time
 import traceback
+import json
 from io import BytesIO
 
 import requests
@@ -106,7 +107,7 @@ class StableDiffusionHordeJob(HordeJobFramework):
                 "clip_skip": self.current_payload.get("clip_skip", 1),
                 "n_iter": 1,
             }
-            logger.prompt(repr(gen_payload))
+            logger.prompt(json.dumps(gen_payload))
             # These params might not always exist in the horde payload
             if source_image:
                 gen_payload["source_image"] = source_image
