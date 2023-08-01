@@ -48,7 +48,8 @@ def check_for_old_dir():
 
 def main():
     set_logger_verbosity(args.verbosity)
-    set_discord_hook(args.discord)
+    set_discord_hook("logs", args.discord)
+    set_discord_hook("prompts", args.prompts)
     quiesce_logger(args.quiet)
     # TODO: Remove check after fully deprecating arg.
     if args.skip_md5:

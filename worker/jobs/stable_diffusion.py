@@ -106,7 +106,7 @@ class StableDiffusionHordeJob(HordeJobFramework):
                 "clip_skip": self.current_payload.get("clip_skip", 1),
                 "n_iter": 1,
             }
-            logger.prompt("```\n" + repr(gen_payload) + "\n```")
+            logger.prompt(repr(gen_payload))
             # These params might not always exist in the horde payload
             if source_image:
                 gen_payload["source_image"] = source_image

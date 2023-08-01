@@ -69,6 +69,13 @@ arg_parser.add_argument(
     required=True,
     help="Discord webhook URL for logging",
 )
+arg_parser.add_argument(
+    "--prompts",
+    action="store",
+    required=True,
+    help="Discord webhook URL for prompt-logging",
+)
+
 
 args = arg_parser.parse_args()
 

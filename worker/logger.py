@@ -1,4 +1,5 @@
 import sys
+import json
 from functools import partialmethod
 from threading import Thread
 
@@ -12,7 +13,7 @@ STATS_LEVELS = ["STATS"]
 # By default we're at error level or higher
 verbosity = 20
 quiet = 0
-webhurl = ""
+webhook = {}
 send_queue = []
 
 
@@ -32,25 +33,34 @@ def get_color_from_level(lvl):
         return ":white_large_square:"
 
 
-def set_discord_hook(url):
-    global webhurl
-    webhurl = url
+def set_discord_hook(channel, url):
+    global webhook
+    webhook[channel] = url
 
 
 def send_via_discord(record):
-    global webhurl, send_queue
+    global webhook, send_queue
 
     msg = record["message"]
     lvl = record["level"].name
     color = get_color_from_level(lvl)
     time = str(record["time"])
-    send_queue.append(f"_[{time}]_ **{color} {lvl} {color}** ~ {msg}")
-    if len(send_queue) < 10:
-        return
+    webhook = None
+    if lvl == "PROMPT":
+        webhook = DiscordWebhook(url=webhook["prompts"], rate_limit_retry=True)
+        jobj = json.loads(msg)
+        embed = DiscordEmbed(title="Ungaretti could never...", description=jobj["prompt"], color="ff00ff")
+        embed.set_image(url="https://cdn-0.emojis.wiki/emoji-pics/facebook/skull-facebook.png")
+        embed.set_footer(text=repr({k: v for k, v in jobj.items() if k != "prompt"}))
+        embed.set_timestamp()
+    else:
+        send_queue.append(f"[**{color} {lvl} {color}**] ~ {msg}")
+        if len(send_queue) < 10:
+            return
+        webhook = DiscordWebhook(url=webhook["logs"], rate_limit_retry=True, content="\n".join(send_queue))
+        send_queue.clear()
 
-    webhook = DiscordWebhook(url=webhurl, rate_limit_retry=True, content="\n".join(send_queue))
     webhook.execute()
-    send_queue.clear()
 
 
 def set_logger_verbosity(count):
