@@ -15,7 +15,19 @@ webhurl = ""
 
 
 def get_color_from_level(lvl):
-    return {"GENERATION": "#0000FF", "PROMPT": "#FFFF00", "INIT": "#FFDDFF", "INIT_OK": "#008000", "INIT_WARN": "#FFA500", "INIT_ERR": "#FF0000", "MESSAGE": "#00FF00", "STATS": "#00008B"}[lvl]
+    try:
+        return {
+            "GENERATION": "#0000FF",
+            "PROMPT": "#FFFF00",
+            "INIT": "#FFDDFF",
+            "INIT_OK": "#008000",
+            "INIT_WARN": "#FFA500",
+            "INIT_ERR": "#FF0000",
+            "MESSAGE": "#00FF00",
+            "STATS": "#00008B",
+        }[lvl]
+    except:
+        return "#FFFFFF"
 
 
 def set_discord_hook(url):
@@ -25,7 +37,7 @@ def set_discord_hook(url):
 
 def send_via_discord(record):
     global webhurl
-    
+
     msg = record["message"]
     lvl = record["level"]
     time = record["time"]
