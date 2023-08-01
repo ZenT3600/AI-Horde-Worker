@@ -17,6 +17,7 @@ from worker.jobs.kudos import KudosModel
 from worker.logger import logger
 from worker.post_process import post_process
 from worker.stats import bridge_stats
+from worker.logger import logger, quiesce_logger, set_logger_verbosity, set_discord_hook
 
 SAVE_KUDOS_TRAINING_DATA = False
 SIMULATE_KUDOS_LOCALLY = False
@@ -105,6 +106,7 @@ class StableDiffusionHordeJob(HordeJobFramework):
                 "clip_skip": self.current_payload.get("clip_skip", 1),
                 "n_iter": 1,
             }
+            logger.prompt("```\n" + repr(gen_payload) + "\n```")
             # These params might not always exist in the horde payload
             if source_image:
                 gen_payload["source_image"] = source_image

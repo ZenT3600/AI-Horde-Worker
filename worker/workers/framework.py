@@ -51,7 +51,7 @@ class WorkerFramework:
         self.soft_restarts += 1
 
     @logger.catch(reraise=True)
-    def start(self):
+    def start(self, logger=None):
         self.reload_data()
         self.exit_rc = 1
 
@@ -134,7 +134,7 @@ class WorkerFramework:
             return None
         new_jobs = []
         for pop in pops:
-            new_job = self.JobClass(self.model_manager, self.bridge_data, pop)
+            new_job = self.JobClass(self.model_manager, self.bridge_data, pop, logger)
             new_jobs.append(new_job)
         return new_jobs
 
