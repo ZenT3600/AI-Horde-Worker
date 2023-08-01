@@ -19,9 +19,9 @@ send_queue = []
 def get_color_from_level(lvl):
     try:
         return {
-                "GENERATION": ":purple_square:",
+            "GENERATION": ":purple_square:",
             "PROMPT": ":purple_square:",
-            "INIT": ":white_square",
+            "INIT": ":white_large_square:",
             "INIT_OK": ":green_square:",
             "INIT_WARN": ":orange_square:",
             "INIT_ERR": ":red_square:",
@@ -29,7 +29,7 @@ def get_color_from_level(lvl):
             "STATS": ":blue_square:",
         }[lvl]
     except:
-        return ":white_square:"
+        return ":white_large_square:"
 
 
 def set_discord_hook(url):
