@@ -13,7 +13,7 @@ STATS_LEVELS = ["STATS"]
 # By default we're at error level or higher
 verbosity = 20
 quiet = 0
-webhook = {}
+webhook_url = {}
 send_queue = []
 
 
@@ -34,12 +34,12 @@ def get_color_from_level(lvl):
 
 
 def set_discord_hook(channel, url):
-    global webhook
-    webhook[channel] = url
+    global webhook_url
+    webhook_url[channel] = url
 
 
 def send_via_discord(record):
-    global webhook, send_queue
+    global webhook_url, send_queue
 
     msg = record["message"]
     lvl = record["level"].name
@@ -47,7 +47,7 @@ def send_via_discord(record):
     time = str(record["time"])
     webhook = None
     if lvl == "PROMPT":
-        webhook = DiscordWebhook(url=webhook["prompts"], rate_limit_retry=True)
+        webhook = DiscordWebhook(url=webhook_url["prompts"], rate_limit_retry=True)
         jobj = json.loads(msg)
         embed = DiscordEmbed(title="Ungaretti could never...", description=jobj["prompt"], color="ff00ff")
         embed.set_image(url="https://cdn-0.emojis.wiki/emoji-pics/facebook/skull-facebook.png")
@@ -57,7 +57,7 @@ def send_via_discord(record):
         send_queue.append(f"[**{color} {lvl} {color}**] ~ {msg}")
         if len(send_queue) < 10:
             return
-        webhook = DiscordWebhook(url=webhook["logs"], rate_limit_retry=True, content="\n".join(send_queue))
+        webhook = DiscordWebhook(url=webhook_url["logs"], rate_limit_retry=True, content="\n".join(send_queue))
         send_queue.clear()
 
     webhook.execute()
