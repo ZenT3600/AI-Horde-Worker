@@ -51,7 +51,11 @@ def send_via_discord(record):
     if lvl == "PROMPT":
         webhook = DiscordWebhook(url=webhook_url["prompts"], rate_limit_retry=True)
         jobj = json.loads(msg)
-        embed = DiscordEmbed(title="Ungaretti could never...", description=jobj["prompt"], color="ff00ff")
+        pobj = jobj["prompt"]
+        if "###" not in pobj:
+            pobj = f"{pobj} ### "
+        prompt, negprompt = pobj.split("###", 1)
+        embed = DiscordEmbed(title="Ungaretti could never...", description=prompt + "\n\n\n" + negprompt, color="ff00ff")
         embed.set_thumbnail(url="https://cdn-0.emojis.wiki/emoji-pics/facebook/skull-facebook.png")
         embed.set_footer(text=repr({k: v for k, v in jobj.items() if k != "prompt"}))
         embed.set_timestamp()
