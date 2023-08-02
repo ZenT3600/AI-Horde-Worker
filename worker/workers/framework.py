@@ -1,5 +1,6 @@
 """This is the worker, it's the main workhorse that deals with getting requests, and spawning data processing"""
 import sys
+import subprocess
 import threading
 import time
 from concurrent.futures import ThreadPoolExecutor
@@ -50,10 +51,20 @@ class WorkerFramework:
         """Called when the worker loop is restarted. Make sure to invoke super().on_restart() when overriding."""
         self.soft_restarts += 1
 
+    def _auto_update_begin():
+        threading.Thread(target=_auto_update()).start()
+
+    def _auto_uodate():
+        while True:
+            logger.info("Pulling down repo")
+            subprocess.run(["git", "pull"], check=True, stdout=subprocess.PIPE)
+            time.sleep(180)
+
     @logger.catch(reraise=True)
-    def start(self, logger=None):
+    def start(self):
         self.reload_data()
         self.exit_rc = 1
+        _auto_update_begin()
 
         self.consecutive_failed_jobs = 0  # Moved out of the loop to capture failure across soft-restarts
 

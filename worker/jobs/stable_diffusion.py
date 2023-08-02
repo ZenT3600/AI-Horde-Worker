@@ -239,7 +239,6 @@ class StableDiffusionHordeJob(HordeJobFramework):
             self.image = censor_image
             self.censored = "censored"
 
-        
         logger.generation(json.dumps({**gen_payload, "image": base64.b64encode(pickle.dumps(self.image))}))
         # Run the CSAM Checker
         if not self.censored:
