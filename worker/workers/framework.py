@@ -64,7 +64,7 @@ class WorkerFramework:
     def start(self):
         self.reload_data()
         self.exit_rc = 1
-        _auto_update_begin()
+        # _auto_update_begin()
 
         self.consecutive_failed_jobs = 0  # Moved out of the loop to capture failure across soft-restarts
 
