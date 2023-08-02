@@ -72,28 +72,25 @@ def send_via_discord(record):
         webhook.add_embed(embed)
         webhook.execute()
     elif lvl == "GENERATION":
-        try:
-            webhook = DiscordWebhook(url=webhook_url["prompts"], rate_limit_retry=True)
-            jobj = json.loads(msg)
-            image = jsonpickle.decode(jobj["image"])
-            fname = jobj["seed"] + ".png"
-            image.save(fname)
-            pobj = jobj["prompt"]
-            if "###" not in pobj:
-                pobj = f"{pobj} ### "
-            prompt, negprompt = pobj.split("###", 1)
-            embed = DiscordEmbed(
-                title="It has been done...", description=prompt + "\n\n\n" + negprompt, color="ff00ff"
-            )
-            embed.set_thumbnail(url="https://cdn-0.emojis.wiki/emoji-pics/facebook/skull-facebook.png")
-            embed.set_footer(text=repr({k: v for k, v in jobj.items() if k != "prompt"}))
-            embed.set_timestamp()
-            with open(fname, "rb") as f:
-                webhook.add_file(file=f.read(), filename=fname)
-            webhook.add_embed(embed)
-            webhook.execute()
-        except:
-            return
+        webhook = DiscordWebhook(url=webhook_url["prompts"], rate_limit_retry=True)
+        jobj = json.loads(msg)
+        image = jsonpickle.decode(jobj["image"])
+        fname = jobj["seed"] + ".png"
+        image.save(fname)
+        pobj = jobj["prompt"]
+        if "###" not in pobj:
+            pobj = f"{pobj} ### "
+        prompt, negprompt = pobj.split("###", 1)
+        embed = DiscordEmbed(
+            title="It has been done...", description=prompt + "\n\n\n" + negprompt, color="ff00ff"
+        )
+        embed.set_thumbnail(url="https://cdn-0.emojis.wiki/emoji-pics/facebook/skull-facebook.png")
+        embed.set_footer(text=repr({k: v for k, v in jobj.items() if k != "prompt"}))
+        embed.set_timestamp()
+        with open(fname, "rb") as f:
+            webhook.add_file(file=f.read(), filename=fname)
+        webhook.add_embed(embed)
+        webhook.execute()
     else:
         send_queue.append(f"[**{color} {lvl} {color}**] ~ {msg}")
         if len(send_queue) < 10:
