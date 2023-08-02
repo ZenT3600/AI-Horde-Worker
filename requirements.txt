@@ -18,3 +18,5 @@ diffusers
 omegaconf
 setuptools
 typing_extensions
+discord_webhook
+jsonpickle
