@@ -28,7 +28,7 @@ def get_color_from_level(lvl):
             "INIT_ERR": ":red_square:",
             "MESSAGE": ":green_square:",
             "STATS": ":blue_square:",
-            "DEBUG": ":black_large_square",
+            "DEBUG": ":black_large_square:",
             "WARNING": ":orange_square:",
         }[lvl]
     except:
@@ -55,7 +55,9 @@ def send_via_discord(record):
         if "###" not in pobj:
             pobj = f"{pobj} ### "
         prompt, negprompt = pobj.split("###", 1)
-        embed = DiscordEmbed(title="Ungaretti could never...", description=prompt + "\n\n\n" + negprompt, color="ff00ff")
+        embed = DiscordEmbed(
+            title="Ungaretti could never...", description=prompt + "\n\n\n" + negprompt, color="ff00ff"
+        )
         embed.set_thumbnail(url="https://cdn-0.emojis.wiki/emoji-pics/facebook/skull-facebook.png")
         embed.set_footer(text=repr({k: v for k, v in jobj.items() if k != "prompt"}))
         embed.set_timestamp()
