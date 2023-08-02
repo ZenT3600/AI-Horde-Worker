@@ -31,6 +31,8 @@ def get_color_from_level(lvl):
             "INIT_OK": ":green_square:",
             "INIT_WARN": ":orange_square:",
             "INIT_ERR": ":red_square:",
+            "ERROR": ":red_square:",
+            "TRACE":":red_square:",
             "MESSAGE": ":green_square:",
             "STATS": ":blue_square:",
             "DEBUG": ":black_large_square:",
