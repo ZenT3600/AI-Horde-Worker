@@ -91,7 +91,6 @@ def send_via_discord(record):
                 webhook.add_file(file=f.read(), filename=fname)
             webhook.add_embed(embed)
             webhook.execute()
-            os.remove(fname)
         except:
             return
     else:
