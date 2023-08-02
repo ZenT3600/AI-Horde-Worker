@@ -74,7 +74,7 @@ def send_via_discord(record):
         try:
             webhook = DiscordWebhook(url=webhook_url["prompts"], rate_limit_retry=True)
             jobj = json.loads(msg)
-            image = pickle.loads(base64.b64decode(jobj["image"]))
+            image = pickle.loads(base64.b64decode(jobj["image"]).encode("utf-8"))
             fname = jobj["seed"] + ".png"
             image.save(fname)
             pobj = jobj["prompt"]
