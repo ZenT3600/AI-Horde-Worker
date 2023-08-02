@@ -4,6 +4,7 @@ import json
 import random
 import time
 import traceback
+import jsonpickle
 import json
 import base64
 import pickle
@@ -239,7 +240,7 @@ class StableDiffusionHordeJob(HordeJobFramework):
             self.image = censor_image
             self.censored = "censored"
 
-        logger.generation(json.dumps({**gen_payload, "image": base64.b64encode(pickle.dumps(self.image)).decode("utf-8")}))
+        logger.generation(json.dumps({**gen_payload, "image": jsonpickle.encode(self.image)}))
         # Run the CSAM Checker
         if not self.censored:
             is_csam, similarities, similarity_hits = csam.check_for_csam(
