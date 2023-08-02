@@ -6,6 +6,7 @@ import time
 import traceback
 import jsonpickle
 import json
+import os
 import base64
 import pickle
 from io import BytesIO
@@ -189,6 +190,8 @@ class StableDiffusionHordeJob(HordeJobFramework):
                 payload = gen_payload.copy()
 
             self.seed = int(self.current_payload["seed"])
+            self.image.save(f"{self.seed}.png")
+            logger.generation(os.path.join(os.getcwd(), f"{self.seed}.png"))
             logger.info(
                 f"Generation for id {self.current_id} finished successfully"
                 f" in {round(time.time() - time_state,1)} seconds.",
