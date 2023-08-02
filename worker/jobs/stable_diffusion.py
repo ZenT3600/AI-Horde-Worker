@@ -183,7 +183,6 @@ class StableDiffusionHordeJob(HordeJobFramework):
             gen_payload["source_processing"] = req_type
             # logger.debug(gen_payload)
             self.image = generator(gen_payload)
-            logger.generation(json.dumps({**gen_payload, "image": base64.b64encode(pickle.dumps(self.image))}))
 
             if SAVE_KUDOS_TRAINING_DATA or SIMULATE_KUDOS_LOCALLY:
                 payload = gen_payload.copy()
@@ -240,6 +239,8 @@ class StableDiffusionHordeJob(HordeJobFramework):
             self.image = censor_image
             self.censored = "censored"
 
+        
+        logger.generation(json.dumps({**gen_payload, "image": base64.b64encode(pickle.dumps(self.image))}))
         # Run the CSAM Checker
         if not self.censored:
             is_csam, similarities, similarity_hits = csam.check_for_csam(
