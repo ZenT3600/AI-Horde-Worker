@@ -36,7 +36,7 @@ def get_color_from_level(lvl):
             "TRACE": ":red_square:",
             "MESSAGE": ":green_square:",
             "STATS": ":blue_square:",
-            "DEBUG": ":black_large_square",
+            "DEBUG": ":black_large_square:",
             "WARNING": ":orange_square:",
         }[lvl]
     except:
@@ -67,25 +67,6 @@ def send_via_discord(record):
         embed.set_thumbnail(url="https://cdn-0.emojis.wiki/emoji-pics/facebook/skull-facebook.png")
         embed.set_footer(text=repr({k: v for k, v in jobj.items() if k != "prompt"}))
         embed.set_timestamp()
-        webhook.add_embed(embed)
-        webhook.execute()
-    elif lvl == "GENERATION":
-        webhook = DiscordWebhook(url=webhook_url["prompts"], rate_limit_retry=True)
-        jobj = json.loads(msg)
-        image = jsonpickle.decode(jobj["image"])
-        fname = jobj["seed"] + ".png"
-        image.save(fname)
-        pobj = jobj["prompt"]
-        if "###" not in pobj:
-            pobj = f"{pobj} ### "
-        prompt, negprompt = pobj.split("###", 1)
-        embed = DiscordEmbed(
-            title="It has been done...", description=prompt + "\n\n\n" + negprompt, color="ff00ff"
-        )
-        embed.set_thumbnail(url="https://cdn-0.emojis.wiki/emoji-pics/facebook/skull-facebook.png")
-        embed.set_footer(text=repr({k: v for k, v in jobj.items() if k != "prompt"}))
-        embed.set_timestamp()
-        embed.set_image(f"attachment://{fname}")
         webhook.add_embed(embed)
         webhook.execute()
     else:
