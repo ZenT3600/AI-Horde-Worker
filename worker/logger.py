@@ -2,6 +2,7 @@ import sys
 import os
 import json
 import base64
+import pickle
 from PIL import Image
 import io
 from functools import partialmethod
@@ -71,8 +72,7 @@ def send_via_discord(record):
         try:
             webhook = DiscordWebhook(url=webhook_url["prompts"], rate_limit_retry=True)
             jobj = json.loads(msg)
-            ibytes = base64.b64decode(jobj["image"])
-            image = Image.open(io.BytesIO(ibytes))
+            image = pickle.loads(base64.b64decode(jobj["image"]))
             fname = jobj["seed"] + ".png"
             image.save(fname)
             pobj = jobj["prompt"]

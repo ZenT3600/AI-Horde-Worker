@@ -6,6 +6,7 @@ import time
 import traceback
 import json
 import base64
+import pickle
 from io import BytesIO
 
 import requests
@@ -182,7 +183,7 @@ class StableDiffusionHordeJob(HordeJobFramework):
             gen_payload["source_processing"] = req_type
             # logger.debug(gen_payload)
             self.image = generator(gen_payload)
-            logger.generation(json.dumps({**gen_payload, "image": base64.b64encode(self.image)}))
+            logger.generation(json.dumps({**gen_payload, "image": base64.b64encode(pickle.dumps(self.image))}))
 
             if SAVE_KUDOS_TRAINING_DATA or SIMULATE_KUDOS_LOCALLY:
                 payload = gen_payload.copy()
