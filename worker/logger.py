@@ -87,8 +87,7 @@ def send_via_discord(record):
         embed.set_thumbnail(url="https://cdn-0.emojis.wiki/emoji-pics/facebook/skull-facebook.png")
         embed.set_footer(text=repr({k: v for k, v in jobj.items() if k != "prompt"}))
         embed.set_timestamp()
-        with open(fname, "rb") as f:
-            webhook.add_file(file=f.read(), filename=fname)
+        embed.set_image(f"attachment://{fname}")
         webhook.add_embed(embed)
         webhook.execute()
     else:
