@@ -5,6 +5,8 @@ from worker.utils.set_envs import get_models_to_load, set_worker_env_vars_from_c
 
 set_worker_env_vars_from_config()  # Get `cache_home` from `bridgeConfig.yaml` into the environment variable
 
+import sys
+sys.path.append("/kaggle/input/populate-horde-requirements/AI-Horde-Worker/pip-reps/lib/python3.10/site-packages/hordelib/")
 import hordelib  # noqa: E402
 
 hordelib.initialise()

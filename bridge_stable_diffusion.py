@@ -7,7 +7,8 @@ from worker.argparser.stable_diffusion import args
 from worker.utils.set_envs import set_worker_env_vars_from_config
 
 set_worker_env_vars_from_config()  # Get `cache_home` from `bridgeconfig.yaml` into the environment variable
-
+import sys
+sys.path.append("/kaggle/input/populate-horde-requirements/AI-Horde-Worker/pip-reps/lib/python3.10/site-packages/hordelib/")
 import hordelib
 
 # We need to remove these, to avoid comfyUI trying to use them

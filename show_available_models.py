@@ -2,6 +2,8 @@
 
 
 # isort: off
+import sys
+sys.path.append("/kaggle/input/populate-horde-requirements/AI-Horde-Worker/pip-reps/lib/python3.10/site-packages/hordelib/")
 import hordelib
 
 hordelib.initialise()
